@@ -1,13 +1,15 @@
 import ray
 
-
+# Initiate ray environment
 ray.init()
+# By adding the `@ray.remote` decorator, a regular Python function
+# becomes a Ray remote function.
 @ray.remote
 def f(x):
     return x * x
 
-
-futures = [f.remote(i) for i in range(4)]
+# Concurrently run the remote functions
+futures = [f.remote(i) for i in range(4)] # i = 0,1,2,3
 print(ray.get(futures)) # [0, 1, 4, 9]
 
 
@@ -24,9 +26,9 @@ class Counter(object):
 
 
 RAY_DEDUP_LOGS=0
-counters = [Counter.remote() for i in range(4)]
-[c.increment.remote() for c in counters]
-futures = [c.read.remote() for c in counters]
-print(ray.get(futures)) # [1, 1, 1, 1]
+counters = [Counter.remote() for i in range(4)] # parallelised class id
+[c.increment.remote() for c in counters] # call function increment()
+futures = [c.read.remote() for c in counters] # call function read()
+print(ray.get(futures)) # [1, 1, 1, 1] 
 
 ray.shutdown()

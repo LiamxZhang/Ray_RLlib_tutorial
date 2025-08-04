@@ -18,6 +18,7 @@ def my_function():
 # This will immediately return an object ref (a future) and then create
 # a task that will be executed on a worker process.
 obj_ref = my_function.remote()
+print("(1) ", obj_ref)
 
 # The result can be retrieved with ``ray.get``.
 assert ray.get(obj_ref) == 1
@@ -50,15 +51,22 @@ my_function.options(num_cpus=3).remote()
 def function_with_an_argument(value):
     return value + 1
 
-
+# .remote() return the object ID of my_function result
+# ray.get() function returns the result of my_function()
 obj_ref1 = my_function.remote()
 assert ray.get(obj_ref1) == 1
+print("(2) ", ray.get(obj_ref1))
 
 # You can pass an object ref as an argument to another Ray task.
-obj_ref2 = function_with_an_argument.remote(obj_ref1)
+obj_ref2 = function_with_an_argument.remote(obj_ref1) # value of obj_ref1 == 1
 assert ray.get(obj_ref2) == 2
+print("(3) ", ray.get(obj_ref2))
 
-
+# each slow_function wait 10 seconds before return `1`
 object_refs = [slow_function.remote() for _ in range(2)]
 # Return as soon as one of the tasks finished execution.
+# return the 2 results simultaneously
+# num_returns: element number in each vector
 ready_refs, remaining_refs = ray.wait(object_refs, num_returns=1, timeout=None)
+
+print("(4) ", ready_refs, remaining_refs)
