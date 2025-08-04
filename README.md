@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ray Tutorial
 
 
@@ -25,3 +26,7 @@ If you use Ray_Tutorial in your work, please cite us:
     howpublished={\url{https://github.com/OpenRL-Lab/Ray_Tutorial/}},
 }
 ```
+=======
+# Ray_RLlib_tutorial
+The ray.rllib tutorial in jupyter notebook is used to try the APIs.
+>>>>>>> origin/main
